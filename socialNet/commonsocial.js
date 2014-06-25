@@ -4,7 +4,7 @@ var url = require('url');
 var crypto = require('crypto');
 var querystring = require('querystring');
 var util = require('util');
-var needle = require('needle');
+//var needle = require('needle');
 var fs = require('fs');
 
 
@@ -53,13 +53,59 @@ var Oauthstep1 = function(req, res) {
 
 }
 
-var Oauthstep2 = function(req, res, code, network) {
+var Oauthstep2 = function(request, response, code, network) {
     console.log("step2" + network + ":" + code);
     var configuration = JSON.parse(fs.readFileSync(__dirname + "/network_config.json", "utf8"));
     if (configuration[network]) {
+        var options = {
+            host: configuration[network]['host'],
+            port: 443,
+            path:  (configuration[network]['method'] == "POST")?configuration[network]['URL2']:configuration[network]['URL2'] + code + '&client_id=' + configuration[network]['client_id'] + '&client_secret=' + configuration[network]['client_secret'] + '&redirect_uri=' + configuration[network]['redirect_uri'],
+            method: configuration[network]['method']
+            //"https://www.linkedin.com/uas/oauth2/accessToken?grant_type=authorization_code&code=" + code + "&redirect_uri=" + callbackURL + "&client_id=" + APIKey + "&client_secret=" + APIKeySecret
+        };
+        var data = {};
+          
+        if (configuration[network]['method'] == "POST") {
+            data['client_id'] = configuration[network]['client_id'];
+            data['client_secret'] = configuration[network]['client_secret'];
+            data['code'] = code;
+            data['redirect_uri'] = configuration[network]['redirect_uri'];
+            data['grant_type'] = configuration[network]['grant_type'];
+            var headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Length': Buffer.byteLength(querystring.stringify(data))
+            }
+            options['headers'] = headers;
+        }
 
-        needle.get(configuration[network]['URL2'] + code + '&client_id=' + configuration[network]['client_id'] + '&client_secret=' + configuration[network]['client_secret'] + '&redirect_uri=' + configuration[network]['redirect_uri'],
+        var req = https.request(options, function(res) {
+            console.log('STATUS: ' + res.statusCode);
+            console.log('HEADERS: ' + JSON.stringify(res.headers));
+            res.setEncoding('utf8');
+            res.on('data', function(data) {
+                console.log('BODY: ' + data);
+                var access_token = (network == 'Facebook') ? data.toString().split('&')[0].split('=')[1] : JSON.parse(data).access_token;
+                console.log("## access_token ::" + network + " -> " + access_token); // save access_token -- 
+                if (!request.session.data) request.session.data = {};
+                request.session.data[network] = access_token;
+                console.log(request.session.data);
+                response.redirect("/");
+            });
+        });
+
+        req.on('error', function(e) {
+            console.log('problem with request: ' + e.message);
+            response.redirect("/");
+        });
+        if (configuration[network]['method'] == "POST")
+            req.write(querystring.stringify(data));
+        req.end();
+
+        /*
+        needle.get(path,
             function(error, response) {
+                console.log("->->->response " + response.access_token);
                 if (!error && response.statusCode == 200) {
                     //console.log(response.body.access_token
                     // to do from json
@@ -76,6 +122,13 @@ var Oauthstep2 = function(req, res, code, network) {
                     });
                 }
             });
+
+*/
+
+
+
+
+
 
     }
 }

@@ -4,15 +4,17 @@
         "client_secret": "fe511e939923bb778ff49b0c47e1763b",
         "redirect_uri": "http://localhost:3000/api/social/Facebook",
         "scope": "offline_access",
+        "method": "GET",
+        "host" : "graph.facebook.com",
         "URL1": "https://www.facebook.com/dialog/oauth?",
         "URL2": "https://graph.facebook.com/oauth/access_token?code=",
         "URL3": "https://graph.facebook.com/",
         "access_token": "access_token=",
         "Action": {
             "Profile": "me?",
-            "feeds" : "me/feed?",
-            "Photos" : "me/photos?",
-            "myPhotos" : "me/photos/uploaded?"
+            "feeds": "me/feed?",
+            "Photos": "me/photos?",
+            "myPhotos": "me/photos/uploaded?"
 
         }
     },
@@ -21,6 +23,8 @@
         "client_secret": "kXEyyjEQgXzz2I4L",
         "redirect_uri": "http://localhost:3000/api/social/LinkedIn",
         "scope": "r_basicprofile r_fullprofile r_emailaddress r_network r_contactinfo rw_nus rw_groups w_messages",
+        "method": "GET",
+        "host": "api.linkedin.com",
         "URL1": "https://www.linkedin.com/uas/oauth2/authorization?response_type=code&",
         "URL2": "https://www.linkedin.com/uas/oauth2/accessToken?grant_type=authorization_code&code=",
         "URL3": "https://api.linkedin.com/v1/",
@@ -52,6 +56,18 @@
 
     },
     "Google": {
+        "client_id": "327187155337-1j4ivh4hmtvheldmom1t86gfd8bq2g5n.apps.googleusercontent.com",
+        "client_secret": "0FDX9naXIIdAsttWvRFBoSba",
+        "redirect_uri": "http://localhost:3000/api/social/Google",
+        "scope": "email profile",
+        "method": "POST",
+        "grant_type" : "authorization_code",
+        "host": "accounts.google.com",
+        "URL1": "https://accounts.google.com/o/oauth2/auth?response_type=code&access_type=offline&approval_prompt=force&",
+        "URL2": "/o/oauth2/token",
+        "URL3": "https://google.com",
+        "access_token": "access_token=",
+        "Action": {}
 
     }
 
