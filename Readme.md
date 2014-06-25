@@ -1,5 +1,5 @@
  
-Socail APIs
+Social APIs
 =============
 
 Looking to integrate with a Social Networks in single line of code? We've got everything you need here. From sample code to detailed API documentation, you'll be up and running in no time.
