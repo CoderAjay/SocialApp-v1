@@ -1,0 +1,58 @@
+{
+    "Facebook": {
+        "client_id": "225481757617266",
+        "client_secret": "fe511e939923bb778ff49b0c47e1763b",
+        "redirect_uri": "http://localhost:3000/api/social/Facebook",
+        "scope": "offline_access",
+        "URL1": "https://www.facebook.com/dialog/oauth?",
+        "URL2": "https://graph.facebook.com/oauth/access_token?code=",
+        "URL3": "https://graph.facebook.com/",
+        "access_token": "access_token=",
+        "Action": {
+            "Profile": "me?",
+            "feeds" : "me/feed?",
+            "Photos" : "me/photos?",
+            "myPhotos" : "me/photos/uploaded?"
+
+        }
+    },
+    "LinkedIn": {
+        "client_id": "75v4f7ean48l3p",
+        "client_secret": "kXEyyjEQgXzz2I4L",
+        "redirect_uri": "http://localhost:3000/api/social/LinkedIn",
+        "scope": "r_basicprofile r_fullprofile r_emailaddress r_network r_contactinfo rw_nus rw_groups w_messages",
+        "URL1": "https://www.linkedin.com/uas/oauth2/authorization?response_type=code&",
+        "URL2": "https://www.linkedin.com/uas/oauth2/accessToken?grant_type=authorization_code&code=",
+        "URL3": "https://api.linkedin.com/v1/",
+        "access_token": "oauth2_access_token=",
+        "Action": {
+            "Profile": "people/~:(first-name,last-name,headline,picture-url)?format=json&",
+            "Connections": "people/~/connections?format=json&",
+            "NetworkShares": "people/~/shares?format=json&",
+            "NetworksUpdates": "people/~/network/updates?format=json&",
+            "NetworkUpdates": "people/~/network/updates?scope=self&format=json&",
+            "peopleSearchWithKeywords": "people-search:(people:(id,first-name,last-name,picture-url,headline),num-results,facets)?format=json&keywords=Saurabh+Sharma&",
+            "peopleSearchWithFacets": "people-search:(people,facets)?format=json&facet=location,us:84&",
+            "Groups": "people/~/group-memberships?format=json&membership-state=member&",
+            "groupSuggestions": "people/~/suggestions/groups?format=json&",
+            "groupPosts": "groups/12345/posts:(title,summary,creator)?format=json&order=recency&",
+            "groupDetails": "groups/12345:(id,name,short-description,description,posts)?format=json&",
+            "myFollowingCompanies": "people/~/following/companies?format=json&",
+            "myFollowCompanySuggestions": "people/~/suggestions/to-follow/companies?format=json&",
+            "companyDetails": "companies/1337:(id,name,description,industry,logo-url)?format=json&",
+            "companySearch": "company-search:(companies,facets)?format=json&facet=location,us:84&",
+            "myJobSuggestions": "people/~/suggestions/job-suggestions?format=json&",
+            "myJobBookmarks": "people/~/job-bookmarks?format=json&",
+            "jobDetails": "jobs/1452577:(id,company:(name),position:(title))?format=json&",
+            "jobSearch": "job-search:(jobs,facets)?format=json&facet=location,us:84&"
+
+        }
+    },
+    "Twitter": {
+
+    },
+    "Google": {
+
+    }
+
+}
