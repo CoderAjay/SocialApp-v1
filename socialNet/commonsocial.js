@@ -85,13 +85,15 @@ var Oauthstep2 = function(request, response, code, network) {
             res.setEncoding('utf8');
             res.on('data', function(data) {
                 console.log('BODY: ' + data);
-                var access_token = (network == 'Facebook') ? data.toString().split('&')[0].split('=')[1] : JSON.parse(data).access_token;
-                console.log("## access_token ::" + network + " -> " + access_token); // save access_token -- 
-                if (!request.session.data) request.session.data = {};
-                request.session.data[network] = access_token;
-                console.log(request.session.data);
-                response.redirect("/");
+                 var access_token = (network == 'Facebook') ? data.toString().split('&')[0].split('=')[1] : (data);
+                 console.log("## access_token ::" + network + " -> " + access_token); // save access_token -- 
+                //if (!request.session.data) request.session.data = {};
+                //request.session.data[network] = access_token;
+                //console.log(request.session.data);
+                     req.end();
+                 response.redirect("/");
             });
+       
         });
 
         req.on('error', function(e) {
