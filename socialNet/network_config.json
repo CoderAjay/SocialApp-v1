@@ -1,15 +1,21 @@
 {
     "Facebook": {
-        "client_id": "225481757617266",
-        "client_secret": "fe511e939923bb778ff49b0c47e1763b",
-        "redirect_uri": "http://localhost:3000/api/social/Facebook",
-        "scope": "offline_access",
-        "method": "GET",
-        "host" : "graph.facebook.com",
+        "data": {
+            "client_id": "225481757617266",
+            "client_secret": "fe511e939923bb778ff49b0c47e1763b",
+            "redirect_uri": "http://localhost:3000/api/social/Facebook",
+            "access_token": "access_token="
+        },
+        "options": {
+            "scope": "offline_access",
+            "method": "GET",
+            "port": 443,
+            "host": "graph.facebook.com",
+            "path": "/oauth/access_token?client_id=225481757617266&client_secret=fe511e939923bb778ff49b0c47e1763b&redirect_uri=http://localhost:3000/api/social/Facebook&code="
+        },
         "URL1": "https://www.facebook.com/dialog/oauth?",
-        "URL2": "https://graph.facebook.com/oauth/access_token?code=",
         "URL3": "https://graph.facebook.com/",
-        "access_token": "access_token=",
+
         "Action": {
             "Profile": "me?",
             "feeds": "me/feed?",
@@ -19,16 +25,22 @@
         }
     },
     "LinkedIn": {
-        "client_id": "75v4f7ean48l3p",
-        "client_secret": "kXEyyjEQgXzz2I4L",
-        "redirect_uri": "http://localhost:3000/api/social/LinkedIn",
-        "scope": "r_basicprofile r_fullprofile r_emailaddress r_network r_contactinfo rw_nus rw_groups w_messages",
-        "method": "GET",
-        "host": "api.linkedin.com",
+        "data": {
+            "client_id": "75v4f7ean48l3p",
+            "client_secret": "kXEyyjEQgXzz2I4L",
+            "redirect_uri": "http://localhost:3000/api/social/LinkedIn",
+            "access_token": "oauth2_access_token="
+        },
+        "options": {
+            "scope": "r_basicprofile r_fullprofile r_emailaddress r_network r_contactinfo rw_nus rw_groups w_messages",
+            "method": "GET",
+            "port": 443,
+            "host": "api.linkedin.com",
+            "path": "https://www.linkedin.com/uas/oauth2/accessToken?grant_type=authorization_code&client_id=75v4f7ean48l3p&client_secret=kXEyyjEQgXzz2I4L&redirect_uri=http://localhost:3000/api/social/LinkedIn&code="
+        },
         "URL1": "https://www.linkedin.com/uas/oauth2/authorization?response_type=code&",
         "URL2": "https://www.linkedin.com/uas/oauth2/accessToken?grant_type=authorization_code&code=",
         "URL3": "https://api.linkedin.com/v1/",
-        "access_token": "oauth2_access_token=",
         "Action": {
             "Profile": "people/~:(first-name,last-name,headline,picture-url)?format=json&",
             "Connections": "people/~/connections?format=json&",
@@ -53,18 +65,44 @@
         }
     },
     "Twitter": {
+        "options": {
+            "host": "api.twitter.com",
+            "path": "/oauth/authenticate",
+            "method": "GET",
+            "port": 443,
+            "scope": "offline"
 
+        },
+        "data": {
+            "client_id": "Z9osIlXBwMggZAcEbkITnnFKd",
+            "client_secret": "pGZA099YMeHUwDsDToWlORStSBCMGn1or3C9bh6mbIAZdXoOgC",
+            "redirect_uri": "http://127.0.0.1:3000/api/social/Twitter",
+            "grant_type": "authorization_code"
+
+        },
+
+        "URL1": "https://www.twitter.com/oauth/oauth/authenticate?",
+        "URL2": "https://api.twitter.com/oauth/request_token",
+        "URL3": "https://api.twitter.com/oauth/access_token"
     },
     "Google": {
-        "client_id": "327187155337-1j4ivh4hmtvheldmom1t86gfd8bq2g5n.apps.googleusercontent.com",
-        "client_secret": "0FDX9naXIIdAsttWvRFBoSba",
-        "redirect_uri": "http://localhost:3000/api/social/Google",
-        "scope": "email profile",
-        "method": "POST",
-        "grant_type" : "authorization_code",
-        "host": "accounts.google.com",
+        "options": {
+            "host": "accounts.google.com",
+            "path": "/o/oauth2/token",
+            "method": "POST",
+            "port": 443,
+            "scope": "email profile"
+
+        },
+        "data": {
+            "client_id": "327187155337-1j4ivh4hmtvheldmom1t86gfd8bq2g5n.apps.googleusercontent.com",
+            "client_secret": "0FDX9naXIIdAsttWvRFBoSba",
+            "redirect_uri": "http://localhost:3000/api/social/Google",
+            "grant_type": "authorization_code"
+
+        },
         "URL1": "https://accounts.google.com/o/oauth2/auth?response_type=code&access_type=offline&approval_prompt=force&",
-        "URL2": "/o/oauth2/token",
+        "URL0": "https://accounts.google.com/o/oauth2/auth?response_type=code&access_type=offline&approval_prompt=force&",
         "URL3": "https://google.com",
         "access_token": "access_token=",
         "Action": {}

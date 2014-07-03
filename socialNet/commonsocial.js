@@ -4,8 +4,8 @@ var url = require('url');
 var crypto = require('crypto');
 var querystring = require('querystring');
 var util = require('util');
-//var needle = require('needle');
 var fs = require('fs');
+var needle = require('needle');
 
 
 
@@ -43,7 +43,7 @@ var Oauthstep1 = function(req, res) {
     var configuration = JSON.parse(fs.readFileSync(__dirname + "/network_config.json", "utf8"));
     if (configuration[network]) {
         res.writeHead(302, {
-            'Location': configuration[network]['URL1'] + 'client_id=' + configuration[network]['client_id'] + '&redirect_uri=' + configuration[network]['redirect_uri'] + '&scope=' + configuration[network]['scope'] + '&state=RNDM_' + RandomState(18)
+            'Location': configuration[network]['URL1'] + 'client_id=' + configuration[network]['data']['client_id'] + '&redirect_uri=' + configuration[network]['data']['redirect_uri'] + '&scope=' + configuration[network]['options']['scope'] + '&state=RNDM_' + RandomState(18)
         });
         res.end();
     } else
@@ -52,20 +52,66 @@ var Oauthstep1 = function(req, res) {
         });
 
 }
-
+ 
 var Oauthstep2 = function(request, response, code, network) {
     console.log("step2" + network + ":" + code);
     var configuration = JSON.parse(fs.readFileSync(__dirname + "/network_config.json", "utf8"));
     if (configuration[network]) {
+        var options = configuration[network]['options'];
+        if (options['method'] == "POST") {
+            var data = configuration[network].data;
+            data['code'] = code;
+            var headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Length': Buffer.byteLength(querystring.stringify(data))
+            }
+
+            options['headers'] = headers;
+            console.log(options);
+            console.log(data);
+        }
+        else
+            options.path = options.path+code;
+        console.log(options);
+        var req = https.request(options, function(res) {
+            console.log('STATUS: ' + res.statusCode);
+            console.log('HEADERS: ' + JSON.stringify(res.headers));
+            res.setEncoding('utf8');
+            res.on('data', function(data) {
+                 console.log('BODY------------------------: ' + data);
+                 var access_token = (network == 'Facebook') ? data.toString().split('&')[0].split('=')[1] : JSON.parse(data).access_token;
+                 console.log("## access_token ::" + network + " -> "); // save access_token -- 
+                 if (!request.session.data) request.session.data = {};
+                  request.session.data[network] = access_token;
+                  console.log(request.session.data);
+                  response.redirect("/");
+                 
+            });
+        });
+        req.on('error', function(e) {
+            console.log('problem with request: ' + e.message);
+            response.redirect("/");
+        });
+        /*if (configuration[network]['options']['method'] == "POST")
+            req.write(querystring.stringify(data));
+        */req.end();
+    } else
+        console.log("not found in json file");
+}
+
+
+
+
+/*   if (configuration[network]) {
         var options = {
             host: configuration[network]['host'],
             port: 443,
-            path:  (configuration[network]['method'] == "POST")?configuration[network]['URL2']:configuration[network]['URL2'] + code + '&client_id=' + configuration[network]['client_id'] + '&client_secret=' + configuration[network]['client_secret'] + '&redirect_uri=' + configuration[network]['redirect_uri'],
+            path: (configuration[network]['method'] == "POST") ? configuration[network]['URL2'] : configuration[network]['URL2'] + code + '&client_id=' + configuration[network]['client_id'] + '&client_secret=' + configuration[network]['client_secret'] + '&redirect_uri=' + configuration[network]['redirect_uri'],
             method: configuration[network]['method']
             //"https://www.linkedin.com/uas/oauth2/accessToken?grant_type=authorization_code&code=" + code + "&redirect_uri=" + callbackURL + "&client_id=" + APIKey + "&client_secret=" + APIKeySecret
         };
         var data = {};
-          
+
         if (configuration[network]['method'] == "POST") {
             data['client_id'] = configuration[network]['client_id'];
             data['client_secret'] = configuration[network]['client_secret'];
@@ -104,36 +150,8 @@ var Oauthstep2 = function(request, response, code, network) {
             req.write(querystring.stringify(data));
         req.end();
 
-        /*
-        needle.get(path,
-            function(error, response) {
-                console.log("->->->response " + response.access_token);
-                if (!error && response.statusCode == 200) {
-                    //console.log(response.body.access_token
-                    // to do from json
-                    access_token = (network == 'Facebook') ? response.body.toString().split('&')[0].split('=')[1] : response.body.access_token;
-                    //access_token = JSON.parse(response).access_token;
-                    console.log("## access_token ::" + network + " -> " + access_token); // save access_token -- 
-                    if (!req.session.data) req.session.data = {};
-                    req.session.data[network] = access_token;
-                    console.log(req.session.data);
-                    res.redirect("/");
-                } else {
-                    res.json({
-                        'Error': error
-                    });
-                }
-            });
+    }*/
 
-*/
-
-
-
-
-
-
-    }
-}
 
 var Oauthstep3 = function(request, response) {
     console.log("Step3");
@@ -148,12 +166,11 @@ var Oauthstep3 = function(request, response) {
     }
     var configuration = JSON.parse(fs.readFileSync(__dirname + "/network_config.json", "utf8"));
     if (configuration[network] && apicall && access_token) {
-        var path = configuration[network]['URL3'] + configuration[network]['Action'][apicall] + configuration[network]['access_token'] + access_token;
+        var path = configuration[network]['URL3'] + configuration[network]['Action'][apicall] + configuration[network]['data']['access_token'] + access_token;
         console.log(path);
         needle.get(path, function(error, fbres) {
             if (!error && fbres.statusCode == 200) {
                 response.json(fbres.body);
-                //response.end();
             } else {
                 console.log("Error :: " + error);
                 response.json({
@@ -165,8 +182,6 @@ var Oauthstep3 = function(request, response) {
     } else response.json({
         "Error": 'Please follow up with Login step.'
     });
-
-
 }
 
 var RandomState = function(howLong) {
