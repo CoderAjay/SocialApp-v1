@@ -1,8 +1,8 @@
 {
     "Facebook": {
         "data": {
-            "client_id": "225481757617266",
-            "client_secret": "fe511e939923bb778ff49b0c47e1763b",
+            "client_id": "",
+            "client_secret": "",
             "redirect_uri": "http://localhost:3000/api/social/Facebook",
             "access_token": "access_token="
         },
@@ -11,7 +11,7 @@
             "method": "GET",
             "port": 443,
             "host": "graph.facebook.com",
-            "path": "/oauth/access_token?client_id=225481757617266&client_secret=fe511e939923bb778ff49b0c47e1763b&redirect_uri=http://localhost:3000/api/social/Facebook&code="
+            "path": "/oauthhttp://localhost:3000/api/social/Facebook&code="
         },
         "URL1": "https://www.facebook.com/dialog/oauth?",
         "URL3": "https://graph.facebook.com/",
@@ -26,8 +26,8 @@
     },
     "LinkedIn": {
         "data": {
-            "client_id": "75v4f7ean48l3p",
-            "client_secret": "kXEyyjEQgXzz2I4L",
+            "client_id": "",
+            "client_secret": "",
             "redirect_uri": "http://localhost:3000/api/social/LinkedIn",
             "access_token": "oauth2_access_token="
         },
@@ -36,7 +36,7 @@
             "method": "GET",
             "port": 443,
             "host": "api.linkedin.com",
-            "path": "https://www.linkedin.com/uas/oauth2/accessToken?grant_type=authorization_code&client_id=75v4f7ean48l3p&client_secret=kXEyyjEQgXzz2I4L&redirect_uri=http://localhost:3000/api/social/LinkedIn&code="
+            "path": "https:alhost:3000/api/social/LinkedIn&code="
         },
         "URL1": "https://www.linkedin.com/uas/oauth2/authorization?response_type=code&",
         "URL2": "https://www.linkedin.com/uas/oauth2/accessToken?grant_type=authorization_code&code=",
@@ -74,8 +74,8 @@
 
         },
         "data": {
-            "client_id": "Z9osIlXBwMggZAcEbkITnnFKd",
-            "client_secret": "pGZA099YMeHUwDsDToWlORStSBCMGn1or3C9bh6mbIAZdXoOgC",
+            "client_id": "",
+            "client_secret": "",
             "redirect_uri": "http://127.0.0.1:3000/api/social/Twitter",
             "grant_type": "authorization_code"
 
@@ -95,8 +95,8 @@
 
         },
         "data": {
-            "client_id": "327187155337-1j4ivh4hmtvheldmom1t86gfd8bq2g5n.apps.googleusercontent.com",
-            "client_secret": "0FDX9naXIIdAsttWvRFBoSba",
+            "client_id": "",
+            "client_secret": "",
             "redirect_uri": "http://localhost:3000/api/social/Google",
             "grant_type": "authorization_code"
 
